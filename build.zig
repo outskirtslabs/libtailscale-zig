@@ -25,6 +25,10 @@ pub fn build(b: *std.Build) void {
     // Create a step for building all targets
     const all_step = b.step("all", "Build all shared libraries");
 
+    // Copy the main tailscale.h header
+    const install_header = b.addInstallFile(libtailscale_dep.path("tailscale.h"), "tailscale.h");
+    all_step.dependOn(&install_header.step);
+
     for (targets) |target| {
         const step = b.step(target.output, b.fmt("Build {s}", .{target.output}));
 

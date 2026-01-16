@@ -25,12 +25,13 @@ Output will be in `zig-out/`:
 zig-out/
 ├── bin/
 │   └── echo_server
+├── tailscale.h
 ├── libtailscale_darwin_arm64.dylib
 ├── libtailscale_darwin_arm64.h
-├── libtailscale_linux_amd64.h
 ├── libtailscale_linux_amd64.so
-├── libtailscale_linux_arm64.h
-└── libtailscale_linux_arm64.so
+├── libtailscale_linux_amd64.h
+├── libtailscale_linux_arm64.so
+└── libtailscale_linux_arm64.h
 ```
 
 ## Prerequisites
