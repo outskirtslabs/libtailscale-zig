@@ -19,7 +19,19 @@ Supported targets:
 1. Install [zig][zig] and [go][go]
 2. `zig build`
 
-Output will be in `zig-out/`.
+Output will be in `zig-out/`:
+
+```
+zig-out/
+├── bin/
+│   └── echo_server
+├── libtailscale_darwin_arm64.dylib
+├── libtailscale_darwin_arm64.h
+├── libtailscale_linux_amd64.h
+├── libtailscale_linux_amd64.so
+├── libtailscale_linux_arm64.h
+└── libtailscale_linux_arm64.so
+```
 
 ## Prerequisites
 
@@ -38,13 +50,19 @@ zig build
 ## Build Commands
 
 ```bash
-# Build all targets
+# Build all shared libraries (default)
 zig build
+
+# Or explicitly
+zig build all
 
 # Build specific target
 zig build libtailscale_linux_amd64.so
 zig build libtailscale_linux_arm64.so
 zig build libtailscale_darwin_arm64.dylib
+
+# Build example (echo_server linked against native shared lib)
+zig build example
 ```
 
 ## Cross-Compilation to macOS

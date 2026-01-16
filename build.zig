@@ -56,5 +56,45 @@ pub fn build(b: *std.Build) void {
         all_step.dependOn(&go_build.step);
     }
 
+    // Build echo_server example for native target
+    const example_step = b.step("example", "Build echo_server example (native)");
+
+    // Determine which .so/.dylib to use based on host
+    const builtin = @import("builtin");
+    const native_lib = if (builtin.os.tag == .macos)
+        "libtailscale_darwin_arm64.dylib"
+    else if (builtin.cpu.arch == .aarch64)
+        "libtailscale_linux_arm64.so"
+    else
+        "libtailscale_linux_amd64.so";
+
+    const exe_module = b.createModule(.{
+        .target = b.graph.host,
+        .optimize = .Debug,
+    });
+
+    const echo_server = b.addExecutable(.{
+        .name = "echo_server",
+        .root_module = exe_module,
+    });
+    echo_server.addCSourceFile(.{
+        .file = libtailscale_dep.path("example/echo_server.c"),
+    });
+    echo_server.addIncludePath(libtailscale_dep.path("."));
+    echo_server.addLibraryPath(.{ .cwd_relative = b.install_path });
+    echo_server.root_module.linkSystemLibrary("tailscale_linux_amd64", .{});
+    echo_server.linkLibC();
+
+    // Depend on the shared library build (find existing step)
+    for (b.top_level_steps.values()) |step_info| {
+        if (std.mem.eql(u8, step_info.step.name, native_lib)) {
+            echo_server.step.dependOn(&step_info.step);
+            break;
+        }
+    }
+
+    const install_example = b.addInstallArtifact(echo_server, .{});
+    example_step.dependOn(&install_example.step);
+
     b.default_step = all_step;
 }
