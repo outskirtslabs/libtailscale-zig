@@ -8,7 +8,7 @@
     zig.url = "github:mitchellh/zig-overlay";
   };
   outputs =
-    {
+    inputs@{
       self,
       devenv,
       devshell,
@@ -16,6 +16,7 @@
       ...
     }:
     devenv.lib.mkFlake ./. {
+      inherit inputs;
       systems = [
         "x86_64-linux"
         "aarch64-linux"
