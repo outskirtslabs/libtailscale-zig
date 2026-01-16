@@ -1,0 +1,15 @@
+.{
+    .name = .libtailscale_zig,
+    .version = "0.1.0",
+    .fingerprint = 0x3b51884690219cb9,
+    .dependencies = .{
+        .libtailscale = .{
+            .url = "https://github.com/tailscale/libtailscale/archive/refs/heads/main.tar.gz",
+            .hash = "N-V-__8AAH2QBABjGYQ4e44wDxcFtAHodtHjD41HKYOAdffL",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+    },
+}

@@ -1,0 +1,6 @@
+SPDXVersion: SPDX-2.1
+DataLicense: CC0-1.0
+PackageName: libtailscale-zig
+PackageOriginator: Casey Link <casey@outskirtslabs.com>
+PackageHomePage: https://github.com/outskirtslabs/libtailscale-zig
+PackageLicenseDeclared: BSD-3-Clause
