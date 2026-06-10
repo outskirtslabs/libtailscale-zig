@@ -58,7 +58,7 @@
           commands = [
           ];
           packages = [
-            zigpkgs."0.15.2"
+            zigpkgs."0.16.0"
             pkgs.git
             pkgs.go
           ];

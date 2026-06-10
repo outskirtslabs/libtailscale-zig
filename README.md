@@ -38,7 +38,7 @@ zig-out/
 
 You need the following installed:
 
-- [Zig][zig] 0.15.2
+- [Zig][zig] 0.16.0
 - [Go][go] 1.21+
 
 If you have nix you can use the dev shell provided by the flake in this repo:

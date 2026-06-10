@@ -5,7 +5,7 @@
     .dependencies = .{
         .libtailscale = .{
             .url = "https://github.com/tailscale/libtailscale/archive/refs/heads/main.tar.gz",
-            .hash = "N-V-__8AAH2QBABjGYQ4e44wDxcFtAHodtHjD41HKYOAdffL",
+            .hash = "N-V-__8AANXOBADuwYgoLmKyiTyXpGtZ8hUt0Qn9AgxjfGy9",
         },
     },
     .paths = .{

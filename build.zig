@@ -16,8 +16,7 @@ const targets = [_]Target{
 
 pub fn build(b: *std.Build) void {
     const apple_sdk_path = b.option([]const u8, "apple-sdk", "Path to macOS SDK") orelse
-        std.posix.getenv("APPLE_SDK_PATH") orelse
-        null;
+        b.graph.environ_map.get("APPLE_SDK_PATH");
 
     const libtailscale_dep = b.dependency("libtailscale", .{});
     const libtailscale_path = libtailscale_dep.path(".").getPath(b);
@@ -71,6 +70,12 @@ pub fn build(b: *std.Build) void {
         "libtailscale_linux_arm64.so"
     else
         "libtailscale_linux_amd64.so";
+    const native_lib_name = if (builtin.os.tag == .macos)
+        "tailscale_darwin_arm64"
+    else if (builtin.cpu.arch == .aarch64)
+        "tailscale_linux_arm64"
+    else
+        "tailscale_linux_amd64";
 
     const exe_module = b.createModule(.{
         .target = b.graph.host,
@@ -81,13 +86,13 @@ pub fn build(b: *std.Build) void {
         .name = "echo_server",
         .root_module = exe_module,
     });
-    echo_server.addCSourceFile(.{
+    echo_server.root_module.addCSourceFile(.{
         .file = libtailscale_dep.path("example/echo_server.c"),
     });
-    echo_server.addIncludePath(libtailscale_dep.path("."));
-    echo_server.addLibraryPath(.{ .cwd_relative = b.install_path });
-    echo_server.root_module.linkSystemLibrary("tailscale_linux_amd64", .{});
-    echo_server.linkLibC();
+    echo_server.root_module.addIncludePath(libtailscale_dep.path("."));
+    echo_server.root_module.addLibraryPath(.{ .cwd_relative = b.install_path });
+    echo_server.root_module.linkSystemLibrary(native_lib_name, .{});
+    echo_server.root_module.linkSystemLibrary("c", .{});
 
     // Depend on the shared library build (find existing step)
     for (b.top_level_steps.values()) |step_info| {
